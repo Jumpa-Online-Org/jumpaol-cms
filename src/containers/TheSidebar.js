@@ -11,18 +11,18 @@ import {
   CSidebarMinimizer,
   CSidebarNavDropdown,
   CSidebarNavItem,
-  CRow,
-  CCol,
+  // CRow,
+  // CCol,
 } from '@coreui/react'
 
-import CIcon from '@coreui/icons-react'
+// import CIcon from '@coreui/icons-react'
 
 // sidebar nav config
 import navigation from './_nav'
 
 const TheSidebar = () => {
   const dispatch = useDispatch()
-  const show = useSelector(state => state.sidebarShow)
+  const show = useSelector(state => state.sidebarReducer.sidebarShow)
 
   return (
     <CSidebar

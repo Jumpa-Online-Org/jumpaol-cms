@@ -9,23 +9,23 @@ import {
   CHeaderNavLink,
   CSubheader,
   CBreadcrumbRouter,
-  CLink
+  // CLink
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
 // routes config
 import routes from '../routes'
 
-import {
-  TheHeaderDropdown,
-  TheHeaderDropdownMssg,
-  TheHeaderDropdownNotif,
-  TheHeaderDropdownTasks
-}  from './index'
+// import {
+//   TheHeaderDropdown,
+//   TheHeaderDropdownMssg,
+//   TheHeaderDropdownNotif,
+//   TheHeaderDropdownTasks
+// }  from './index'
 
 const TheHeader = () => {
   const dispatch = useDispatch()
-  const sidebarShow = useSelector(state => state.sidebarShow)
+  const sidebarShow = useSelector(state => state.sidebarReducer.sidebarShow)
 
   const toggleSidebar = () => {
     const val = [true, 'responsive'].includes(sidebarShow) ? false : 'responsive'
@@ -54,9 +54,9 @@ const TheHeader = () => {
       </CHeaderBrand>
 
       <CHeaderNav className="d-md-down-none mr-auto">
-        <CHeaderNavItem className="px-3" >
+        {/* <CHeaderNavItem className="px-3" >
           <CHeaderNavLink to="/dashboard">Dashboard</CHeaderNavLink>
-        </CHeaderNavItem>
+        </CHeaderNavItem> */}
         {/* <CHeaderNavItem  className="px-3">
           <CHeaderNavLink to="/users">Users</CHeaderNavLink>
         </CHeaderNavItem>

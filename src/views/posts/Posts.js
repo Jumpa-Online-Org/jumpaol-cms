@@ -1,6 +1,8 @@
 import React from 'react'
 import axios from 'axios'
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux'
+import { getPosts } from "../../store/actions/postAction";
 import {
   CButton,
   CCard,
@@ -14,35 +16,28 @@ import {
 import CIcon from '@coreui/icons-react'
 
 const Posts = () => {
-  const [posts, setPosts] = React.useState(null)
+  // const [posts, setPosts] = React.useState(null)
   const [page, setPage] = React.useState(1)
+  const posts = useSelector(state => state?.postReducer.posts)
+  // const isLoading = useSelector(state => state?.postReducer.isLoading)
+  const dispatch = useDispatch()
+  // const pattern = /([0-9]){4}(\-)([0-9]){2}(\-)([0-9]){2}/
+  // console.log(text.match(pattern)[0])
 
   const history = useHistory()
   const baseURL = 'https://api-jumpaol.herokuapp.com/api/posts'
   const fields = [
-    { key: 'post_title', label: 'Judul'},
-    { key: 'author_name', label: 'Penulis'},
+    { key: 'post_title', label: 'Judul', _style: {width: '40%'}},
+    { key: 'author_name', label: 'Penulis', _style: {width: '20%'}},
     // { key: 'post_category' },
-    { key: 'post_date', label: 'Tanggal Terbit' },
-    { key: 'views' },
-    { key: 'comment_count', label: 'Comment' },
-    { key: 'action', label: '' },
+    { key: 'display_date', label: 'Tanggal Terbit', _style: {width: '20%'}},
+    { key: 'views', _style: {width: '5%'}},
+    { key: 'comment_count', label: 'Comment', _style: {width: '5%'}},
+    { key: 'action', label: '', _style: {width: '10%'}},
   ]
 
   React.useEffect(() => {
-    async function getPost() {
-      setPosts({})
-      const response = await axios.get(`${baseURL}?q=&page=${page}&per_page=10`)
-      const tes = response?.data?.data?.data.map((item) => ({
-        ...item,
-        author_name: item.author.display_name,
-      }))
-
-      const data = {...response.data.data, data: tes}
-      // console.log('data '+data)
-      setPosts(data);
-    }
-    getPost();
+    dispatch(getPosts(page))
   }, [page])
 
   const handleAddPost = () => {
@@ -66,16 +61,10 @@ const Posts = () => {
     })
   }
 
-
-  const handleChangePage = (index) => {
-    setPage(index)
-  }
-
-  if (!posts) return "No Posts!"
-
+  // if (!posts.data) return "No Posts!"
 
   return (
-    <div className>
+    <div>
       {/* {console.log(posts)} */}
       <CRow className="mt-3">
         <CCol xs="12" lg="12">
@@ -97,6 +86,7 @@ const Posts = () => {
               // itemsPerPageSelect
               // itemsPerPage={10}
               sorter
+              loading={!posts.data ? true : false}
               // pagination
               scopedSlots = {{
                 'action':

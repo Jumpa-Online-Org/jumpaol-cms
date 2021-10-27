@@ -1,4 +1,4 @@
-import React, { lazy } from 'react'
+import React from 'react'
 import axios from 'axios'
 import {
   CCol,
@@ -14,23 +14,31 @@ import CIcon from '@coreui/icons-react'
 // const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 
 const Dashboard = () => {
-  const [posts, setPosts] = React.useState(null)
+  const [posts, setPosts] = React.useState()
   const baseURL = 'https://api-jumpaol.herokuapp.com/api/posts'
+
   React.useEffect(() => {
-    axios.get(baseURL).then((res) => {
-      setPosts(res.data.data)
-    })
-  }, [])
+    setPosts({})
+    async function getPost() {
+      axios.get(baseURL).then((res) => {
+        setPosts(res.data.data)
+      })
+    }
+    getPost();
+  },[])
+
+  if (!posts) return "No Posts!"
+
   return (
     <>
       <CRow>
         <CCol lg="12">
           <CCardGroup className="mb-4">
             <CWidgetProgressIcon
-              header={posts.total}
+              header={!posts.data ? `...` : `${posts.total}`}
               text="Posts"
-              color="gradient-info"
-              inverse
+              color="gradient-primary"
+              // inverse
             >
               <CIcon name="cil-people" height="36"/>
             </CWidgetProgressIcon>
